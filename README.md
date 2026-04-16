@@ -1,4 +1,3 @@
-# Infra
+# Fleet
 
-Docs, Scripts and IaC to setup and operate several services
-across multiple hosts.
+Docs, Scripts and IaC to operate a fleet of services across multiple hosts

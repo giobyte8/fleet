@@ -2,15 +2,24 @@ name: fleet
 
 include:
   - ../../services/common/backbone/compose.yaml
+  - ../../services/common/telemetry/compose.yaml
   - ../../services/galleries/compose.yaml
 
 services:
   thumbnailer:
     environment:
-      - 'OTEL_ENABLED=false'
+      - 'OTEL_ENABLED=true'
     volumes:
-      - /Users/giobyte8/Pictures:/media/originals:ro
-      - /Users/giobyte8/src/thumbnailer/runtime/thumbs_host_m4:/media/thumbs
+      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
+      - '${GL_PATH_THUMBS}:/media/thumbs'
+
+  galleries:
+    volumes:
+      - galleries_data:/mnt/runtime
+      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
+
+volumes:
+  galleries_data:
 
 networks:
   default:

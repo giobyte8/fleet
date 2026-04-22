@@ -2,6 +2,7 @@
 services:
   thumbnailer:
     image: giobyte8/thumbnailer:dev
+    restart: unless-stopped
     environment:
       - 'LOG_LEVEL=INFO'
 
@@ -21,6 +22,33 @@ services:
 
       - 'OTEL_ENABLED=true'
       - 'OTEL_COLLECTOR_GRPC_ENDPOINT=otelcol:4317'
-
     depends_on:
       - rabbitmq
+
+  galleries:
+    image: giobyte8/galleries:dev
+    restart: unless-stopped
+    ports:
+      - ${GL_UI_PORT}:8100
+      - ${GL_UI_SCHEDULER_PORT}:8101
+    environment:
+      - 'RABBITMQ_HOST=rabbitmq'
+      - 'RABBITMQ_PORT=5672'
+      - 'RABBITMQ_USER=${RABBITMQ_USER}'
+      - 'RABBITMQ_PASS=${RABBITMQ_PASS}'
+      - 'RABBITMQ_VHOST=/'
+
+      - 'NEO4J_HOST=neo4j'
+      - 'NEO4J_PORT=7687'
+      - 'NEO4J_USER=${NEO4J_USER}'
+      - 'NEO4J_PASS=${NEO4J_PASS}'
+
+      - 'GL_SCHEDULER_DB=/mnt/runtime/scheduler.db'
+      - 'GL_CONTENTS_ROOT_PATH=/media/originals'
+
+      - 'OTEL_ENABLED=true'
+      - 'OTEL_COLLECTOR_GRPC_ENDPOINT=otelcol:4317'
+      - 'OTEL_COLLECTOR_HTTP_ENDPOINT=http://otelcol:4318'
+    depends_on:
+      - rabbitmq
+      - neo4j

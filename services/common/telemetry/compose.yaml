@@ -1,0 +1,50 @@
+services:
+  otelcol:
+    image: otel/opentelemetry-collector-contrib
+    # ports:
+    #   - 1888:1888   # pprof extension
+    #   - 8888:8888   # Prometheus metrics exposed by the Collector
+    #   - 8889:8889   # Prometheus exporter metrics
+    #   - 13133:13133 # health_check extension
+    #   - 4317:4317   # OTLP gRPC receiver
+    #   - 4318:4318   # OTLP http receiver
+    #   - 55679:55679 # zpages extension
+    volumes:
+      - "./config/otelcol.yaml:/etc/otelcol-contrib/config.yaml"
+
+  # From: https://www.jaegertracing.io/docs/2.5/getting-started/#all-in-one
+  jaeger:
+    image: jaegertracing/jaeger:2.5.0
+    ports:
+      - ${JAEGER_UI_PORT}:16686 # UI
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - ${PROMETHEUS_UI_PORT}:9090 # UI and APIs
+    volumes:
+      - "./config/prometheus.yaml:/etc/prometheus/prometheus.yml"
+      - "prometheus_data:/prometheus"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=90d"
+      - "--web.enable-lifecycle"
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - ${GRAFANA_UI_PORT}:3000 # UI
+    volumes:
+      - "grafana_data:/var/lib/grafana"
+      # - "./config/grafana/datasources:/etc/grafana/provisioning/datasources"
+      # - "./config/grafana/dashboards:/etc/grafana/provisioning/dashboards"
+    environment:
+      - "GF_SECURITY_ADMIN_USER=$GRAFANA_USER"
+      - "GF_SECURITY_ADMIN_PASSWORD=$GRAFANA_PASS"
+      # - GF_INSTALL_PLUGINS= # You can install plugins here if needed
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus_data:
+  grafana_data:

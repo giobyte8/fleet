@@ -8,6 +8,8 @@ services:
       #   Default password: neo4j (change on first login)
       - ${NEO4J_UI_PORT}:7474
       - ${NEO4J_BOLT_PORT}:7687
+    environment:
+      - 'NEO4J_AUTH=neo4j/${NEO4J_PASS}'
     volumes:
       - neo4j_data:/data
 

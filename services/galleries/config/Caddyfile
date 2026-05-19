@@ -13,7 +13,7 @@
   respond @healthz 200
 
   @thumbs path /thumbs/*
-  header @thumbs Cache-Control "public, max-age=31536000, immutable"
+  header @thumbs Cache-Control "public, max-age=259200"
 
   file_server browse
 }

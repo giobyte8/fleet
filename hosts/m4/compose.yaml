@@ -6,20 +6,11 @@ include:
   - ../../services/galleries/compose.yaml
 
 services:
+
+  # start multiple replicas via `dc up -d --scale thumbnailer=3`
   thumbnailer:
     environment:
       - 'OTEL_ENABLED=true'
-    volumes:
-      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
-      - '${GL_PATH_THUMBS}:/media/thumbs'
-
-  galleries:
-    volumes:
-      - galleries_data:/mnt/runtime
-      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
-
-volumes:
-  galleries_data:
 
 networks:
   default:

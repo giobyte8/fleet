@@ -22,6 +22,9 @@ services:
 
       - 'OTEL_ENABLED=true'
       - 'OTEL_COLLECTOR_GRPC_ENDPOINT=otelcol:4317'
+    volumes:
+      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
+      - gl_thumbs:/media/thumbs
     depends_on:
       - rabbitmq
 
@@ -29,8 +32,8 @@ services:
     image: giobyte8/galleries:dev
     restart: unless-stopped
     ports:
-      - ${GL_UI_PORT}:8100
-      - ${GL_UI_SCHEDULER_PORT}:8101
+      - ${GL_APP_PORT}:8100
+      - ${GL_SCHEDULER_PORT}:8101
     environment:
       - 'RABBITMQ_HOST=rabbitmq'
       - 'RABBITMQ_PORT=5672'
@@ -49,6 +52,9 @@ services:
       - 'OTEL_ENABLED=true'
       - 'OTEL_COLLECTOR_GRPC_ENDPOINT=otelcol:4317'
       - 'OTEL_COLLECTOR_HTTP_ENDPOINT=http://otelcol:4318'
+    volumes:
+      - gl_runtime:/mnt/runtime
+      - '${GL_PATH_ORIGINALS}:/media/originals:ro'
     depends_on:
       - rabbitmq
       - neo4j
@@ -64,9 +70,15 @@ services:
       - estatico_caddy_config:/config
       - ./config/Caddyfile:/etc/caddy/Caddyfile:ro
       - ${GL_PATH_ORIGINALS}:/data/media:ro
-      - ${GL_PATH_THUMBS}:/data/thumbs:ro
+      - gl_thumbs:/data/thumbs:ro
 
 
 volumes:
   estatico_caddy_data:
   estatico_caddy_config:
+
+  # Keeps scheduled jobs database
+  gl_runtime:
+
+  # Stores generated thumbnails for galleries
+  gl_thumbs:

@@ -6,6 +6,9 @@ include:
   - ../../services/galleries/compose.yaml
 
 services:
+  otelcol:
+    environment:
+      - 'OTEL_RESOURCE_ATTRIBUTES=host.name=fleet-m4,service.namespace=fleet'
 
   # start multiple replicas via `dc up -d --scale thumbnailer=3`
   thumbnailer:
@@ -15,9 +18,6 @@ services:
     environment:
       - 'OTEL_ENABLED=true'
 
-  otelcol:
-    environment:
-      - 'OTEL_RESOURCE_ATTRIBUTES=host.name=fleet-m4,service.namespace=fleet'
 
 networks:
   default:

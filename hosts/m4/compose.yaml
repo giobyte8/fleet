@@ -15,6 +15,10 @@ services:
     environment:
       - 'OTEL_ENABLED=true'
 
+  otelcol:
+    environment:
+      - 'OTEL_RESOURCE_ATTRIBUTES=host.name=fleet-m4,service.namespace=fleet'
+
 networks:
   default:
     name: fleet_m4

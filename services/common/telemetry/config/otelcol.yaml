@@ -6,11 +6,11 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-  # Host metrics receiver configuration
+  # hostmetricsreceiver: Collects host resources metrics
   # docs: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md
   host_metrics:
-    root_path: /hostfs              # Host filesystem mounted in the container
-    collection_interval: 10s        # Default 1m
+    root_path: /hostfs          # Host filesystem mounted in the container
+    collection_interval: 10s    # Default 1m
     scrapers:
       cpu:
       #load:
@@ -22,6 +22,10 @@ receivers:
       #processes:
 
 processors:
+  # Detect resource attributes such as host.name from environment variables.
+  resourcedetection:
+    detectors: [env]
+
   batch:
     timeout: 10s
     send_batch_size: 1000
@@ -37,17 +41,27 @@ exporters:
 
   prometheus:
     endpoint: 0.0.0.0:8889
+    # Convert resource attributes into Prometheus labels.
+    resource_to_telemetry_conversion:
+      enabled: true
     # const_labels:
     #   service: hservices
 
 service:
+  # The part before the slash '/' is the required pipeline signal type 
+  # (e.g. 'metrics', 'traces'), and the suffix is an arbitrary name.
+  # The names have no effect on routing; the receivers, processors, and
+  # exporters lists determine the behavior.
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp/jaeger]
-    metrics:
-      receivers: [otlp, host_metrics]
+    metrics/hostmetrics:
+      receivers: [host_metrics]
+      processors: [resourcedetection, batch]
+      exporters: [prometheus]
+    metrics/otlp:
+      receivers: [otlp]
       processors: [batch]
-      #exporters: [debug, prometheus]
       exporters: [prometheus]

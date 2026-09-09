@@ -6,6 +6,21 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
+  # Host metrics receiver configuration
+  # docs: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md
+  host_metrics:
+    root_path: /hostfs              # Host filesystem mounted in the container
+    collection_interval: 10s        # Default 1m
+    scrapers:
+      cpu:
+      #load:
+      memory:
+      disk:
+      filesystem:
+      network:
+      #paging:
+      #processes:
+
 processors:
   batch:
     timeout: 10s
@@ -32,7 +47,7 @@ service:
       processors: [batch]
       exporters: [otlp/jaeger]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, host_metrics]
       processors: [batch]
       #exporters: [debug, prometheus]
       exporters: [prometheus]

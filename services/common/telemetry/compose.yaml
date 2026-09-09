@@ -11,6 +11,7 @@ services:
     #   - 55679:55679 # zpages extension
     volumes:
       - "./config/otelcol.yaml:/etc/otelcol-contrib/config.yaml"
+      - "/:/hostfs:ro"
     healthcheck:
       test: ["CMD", "/otelcol-contrib", "validate", "--config=/etc/otelcol-contrib/config.yaml"]
       interval: 5m

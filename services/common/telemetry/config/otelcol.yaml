@@ -13,7 +13,7 @@ receivers:
     collection_interval: 10s    # Default 1m
     scrapers:
       cpu:
-      #load:
+      load:
       memory:
       disk:
       filesystem:
@@ -48,7 +48,7 @@ exporters:
     #   service: hservices
 
 service:
-  # The part before the slash '/' is the required pipeline signal type 
+  # The part before the slash '/' is the required pipeline signal type
   # (e.g. 'metrics', 'traces'), and the suffix is an arbitrary name.
   # The names have no effect on routing; the receivers, processors, and
   # exporters lists determine the behavior.

@@ -9,6 +9,9 @@ services:
 
   # start multiple replicas via `dc up -d --scale thumbnailer=3`
   thumbnailer:
+    deploy:
+      mode: replicated
+      replicas: 5
     environment:
       - 'OTEL_ENABLED=true'
 

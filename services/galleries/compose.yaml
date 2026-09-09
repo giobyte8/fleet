@@ -3,6 +3,11 @@ services:
   thumbnailer:
     image: giobyte8/thumbnailer:dev
     restart: unless-stopped
+    cpus: '1.0'
+    mem_limit: '1.5g'
+    deploy:
+      mode: replicated
+      replicas: 2
     environment:
       - 'LOG_LEVEL=INFO'
 

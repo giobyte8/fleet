@@ -14,7 +14,7 @@ services:
   thumbnailer:
     deploy:
       mode: replicated
-      replicas: 5
+      replicas: 2
     environment:
       - 'OTEL_ENABLED=true'
 

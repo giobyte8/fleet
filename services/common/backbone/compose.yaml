@@ -52,6 +52,7 @@ services:
   rabbitmq:
     image: rabbitmq:4-management-alpine
     restart: unless-stopped
+    hostname: "${RABBITMQ_HOSTNAME:-rabbit@fleet}"
     ports:
     #   - 5671:5671
     #   - 5672:5672

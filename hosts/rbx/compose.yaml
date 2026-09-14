@@ -9,6 +9,10 @@ include:
 services:
   neo4j:
     cpus: 2.0
+    healthcheck:
+      interval: 60s
+      timeout: 30s
+      start_period: 300s
 
   postgres:
     ports:

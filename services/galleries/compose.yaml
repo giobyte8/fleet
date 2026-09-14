@@ -1,7 +1,7 @@
 
 services:
   thumbnailer:
-    image: giobyte8/thumbnailer:dev
+    image: giobyte8/thumbnailer:1.0.0
     restart: unless-stopped
     cpus: '1.0'
     mem_limit: '1.5g'
@@ -37,7 +37,7 @@ services:
         condition: service_started
 
   galleries:
-    image: giobyte8/galleries:dev
+    image: giobyte8/galleries:1.0.0
     restart: unless-stopped
     ports:
       - ${GL_APP_PORT}:8100

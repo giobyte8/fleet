@@ -4,12 +4,27 @@ include:
   - ../../services/common/backbone/compose.yaml
   - ../../services/common/telemetry/compose.yaml
   - ../../services/ddownloader/compose.yaml
-  #- ../../services/galleries/compose.yaml
+  - ../../services/galleries/compose.yaml
 
 services:
+  neo4j:
+    cpus: 2.0
+
   postgres:
     ports:
       - ${POSTGRES_PORT}:5432
+
+  ###############################################
+  # Telemetry services
+  
+  jaeger:
+    cpus: 1.0
+
+  otelcol:
+    cpus: 2.0
+
+  ###############################################
+  # Apps services
 
   ddownloader:
     env_file:

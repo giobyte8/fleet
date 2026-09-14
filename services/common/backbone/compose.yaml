@@ -1,7 +1,7 @@
 
 services:
   neo4j:
-    image: neo4j:2025
+    image: neo4j:2026
     restart: unless-stopped
     ports:
       # Neo4j Browser: http://localhost:7474

@@ -57,12 +57,14 @@ services:
     #   - 5672:5672
     #   - 15671:15671
       - ${RABBITMQ_UI_PORT}:15672
+      - ${RABBITMQ_METRICS_PORT}:15692
     environment:
       - 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}'
       - 'RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}'
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./config/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s

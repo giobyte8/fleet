@@ -50,14 +50,14 @@ services:
       - 'PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASS}'
 
   rabbitmq:
-    image: rabbitmq:4.2-management-alpine
+    image: rabbitmq:4-management-alpine
     restart: unless-stopped
     ports:
     #   - 5671:5671
     #   - 5672:5672
     #   - 15671:15671
+    #   - 15692:15692   # Prometheus metrics
       - ${RABBITMQ_UI_PORT}:15672
-      - ${RABBITMQ_METRICS_PORT}:15692
     environment:
       - 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}'
       - 'RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}'

@@ -2,6 +2,9 @@
 services:
   ddownloader:
     image: giobyte8/ddownloader:1.6.2
+    labels:
+      fl.group: apps
+      fl.service: ddownloader
     user: "${UID}:${GID}"                        # Ensure it exists your env
     restart: unless-stopped
 

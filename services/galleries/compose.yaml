@@ -2,6 +2,9 @@
 services:
   thumbnailer:
     image: giobyte8/thumbnailer:1.0.0
+    labels:
+      fl.group: apps
+      fl.service: galleries
     restart: unless-stopped
     cpus: '1.0'
     mem_limit: '1.5g'
@@ -38,6 +41,9 @@ services:
 
   galleries:
     image: giobyte8/galleries:1.0.0
+    labels:
+      fl.group: apps
+      fl.service: galleries
     restart: unless-stopped
     ports:
       - ${GL_APP_PORT}:8100
@@ -73,6 +79,9 @@ services:
 
   estatico:
     image: caddy:latest
+    labels:
+      fl.group: apps
+      fl.service: galleries
     restart: unless-stopped
     ports:
       - "${GL_ESTATICO_PORT}:8888/tcp"

@@ -18,9 +18,13 @@ services:
     ports:
       - ${POSTGRES_PORT}:5432
 
+  rabbitmq:
+    healthcheck:
+      start_period: 60s
+
   ###############################################
   # Telemetry services
-  
+
   jaeger:
     cpus: 1.0
 

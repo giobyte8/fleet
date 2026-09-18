@@ -6,26 +6,7 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-  # hostmetricsreceiver: Collects host resources metrics
-  # docs: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md
-  host_metrics:
-    root_path: /hostfs          # Host filesystem mounted in the container
-    collection_interval: 10s    # Default 1m
-    scrapers:
-      cpu:
-      load:
-      memory:
-      disk:
-      filesystem:
-      network:
-      #paging:
-      #processes:
-
 processors:
-  # Detect resource attributes such as host.name from environment variables.
-  resourcedetection:
-    detectors: [env]
-
   batch:
     timeout: 10s
     send_batch_size: 1000
@@ -57,10 +38,6 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp/jaeger]
-    metrics/hostmetrics:
-      receivers: [host_metrics]
-      processors: [resourcedetection, batch]
-      exporters: [prometheus]
     metrics/otlp:
       receivers: [otlp]
       processors: [batch]

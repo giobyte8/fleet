@@ -6,9 +6,21 @@ include:
   - ../../services/galleries/compose.yaml
 
 services:
-  otelcol:
-    environment:
-      - 'OTEL_RESOURCE_ATTRIBUTES=host.name=fleet-m4,service.namespace=fleet'
+
+  # #############################################
+  # Backbone services
+
+  redis:
+    labels:
+      fl.group: disabled
+
+  # #############################################
+  # Telemetry services
+
+  # ...
+
+  # #############################################
+  # Galleries services
 
   # start multiple replicas via `dc up -d --scale thumbnailer=3`
   thumbnailer:

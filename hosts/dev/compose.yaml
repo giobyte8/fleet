@@ -6,8 +6,9 @@ include:
 
 services:
 
-  # These services doesn't expose some ports by default, hence we need to
-  # explicitly expose them here for dev environment.
+  # #############################################
+  # Backbone services
+  #  Map host ports to containers for development
 
   postgres:
     ports:
@@ -19,8 +20,13 @@ services:
       - 5672:5672
 
   redis:
+    labels:
+      fl.group: disabled
     ports:
       - 6379:6379
+
+  # #############################################
+  # Telemetry services
 
   otelcol:
     ports:
